@@ -23,7 +23,7 @@ const keys = [
     { word: "KHOAI MÌ HẤP", start: [4, 2], end: [13, 2] },
     { word: "CHÈ THẠCH HÃN", start: [4, 5], end: [14, 5] },
     { word: "MUỐI VỪNG", start: [8, 9], end: [15, 9] },
-    { word: "CƠM NẮM", start: [9, 14], end: [14, 14] },
+    { word: "CƠM NẮM", start: [9, 12], end: [14, 12] },
     { word: "CHÁO BẸ", start: [5, 4], end: [5, 9] },
     { word: "RAU MĂNG", start: [3, 8], end: [3, 14] },
     { word: "KIM CHÂM XÀO", start: [1, 11], end: [10, 11] }
@@ -132,3 +132,4 @@ function showPopup() {
 function closePopup() {
     document.getElementById("popup").classList.add("hidden");
 }
+
