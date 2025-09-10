@@ -1,0 +1,103 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 0;
+    background: #f2f2f2;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    padding: 5px;
+    background: #8C1007;
+    color: white;
+    flex-shrink: 0;
+}
+
+h1 {
+    font-size: 24px;
+}
+
+h2 {
+    font-size: 16px;
+}
+
+.note {
+    font-style: italic;
+    font-size: 12px;
+}
+
+/* Bảng ô chữ */
+#crossword {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(15, 1fr);
+    grid-template-rows: repeat(15, 1fr);
+
+    /* Ô chữ vừa gọn trong màn hình */
+    width: min(95vw, 95vh);
+    /* không tràn ngang hoặc dọc */
+    height: min(95vw, 95vh);
+    /* luôn vuông */
+
+    max-width: 600px;
+    /* không quá to trên PC */
+    max-height: 600px;
+    /* không quá to trên PC */
+
+    min-width: 280px;
+    /* không quá nhỏ trên điện thoại */
+    min-height: 280px;
+
+    margin: 16px auto;
+    gap: 2px;
+}
+
+.cell {
+    border: 1px solid #ccc;
+    background: white;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: clamp(10px, 2.2vmin, 20px);
+    /* chữ co giãn mượt */
+    cursor: pointer;
+    user-select: none;
+    aspect-ratio: 1/1;
+}
+
+.cell.highlight {
+    background: #ffeb3b;
+}
+
+.cell.found {
+    background: #CD5656;
+    color: white;
+}
+
+/* Popup */
+.popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.popup.hidden {
+    display: none;
+}
+
+.popup-content {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 80%;
+}
