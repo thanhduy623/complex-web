@@ -1,5 +1,5 @@
 :root {
-    --color-primary: #16476A;
+    --color-primary: #016B61;
     --color-secondary: #BF092F;
 }
 
@@ -147,4 +147,5 @@ input::selection {
 .tag-name {
     text-align: left;
     width: 120px;
+
 }
