@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Điểm danh</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <img id="logo" class="logo" src="./logo-doan.png" alt="Logo tổ chức">
+    <h3 id="name-up" class="primary upper"></h3>
+    <h3 id="name-current" class="primary upper"></h3>
+
+    <h2 id="event-type" class="secondary upper"></h2>
+    <h1 id="event-name" class="secondary upper">ĐANG LẤY DỮ LIỆU HOẠT ĐỘNG</h1>
+
+
+    <table>
+        <tr style="display: flex;">
+            <h2 id="name" class="primary capitalize">Đồng chí: Nguyễn Văn A</h2>
+        </tr>
+        <tr>
+            <td class="tag-name">MSSV:</td>
+            <td><input type="text" name="" id="mssv" placeholder="00000000"></td>
+        </tr>
+        <tr>
+            <td class="tag-name">Ngày sinh:</td>
+            <td id="birthday">00/00/0000</td>
+        </tr>
+        <tr>
+            <td class="tag-name">Đơn vị:</td>
+            <td id="faculty">Đơn vị X</td>
+        </tr>
+        <tr>
+            <td class="tag-name">Chức vụ:</td>
+            <td id="position">Chức vụ X</td>
+        </tr>
+        <tr>
+            <td class="tag-name">Chỗ ngồi:</td>
+            <td id="location">Chỗ ngồi X</td>
+        </tr>
+    </table>
+
+    <p id="event-date"></p>
+
+    <div class="check-sum">
+        <span id="sum-success">0</span>
+        <span>/</span>
+        <span id="sum-error">0</span>
+        <span>/</span>
+        <span id="sum-total">0</span>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

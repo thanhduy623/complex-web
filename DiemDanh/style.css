@@ -1,0 +1,150 @@
+:root {
+    --color-primary: #16476A;
+    --color-secondary: #BF092F;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-size: 1rem;
+}
+
+body {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    background-image: url("./background.png");
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    text-align: center;
+
+    font-family: Arial, sans-serif;
+}
+
+.logo {
+    height: 80px;
+    margin-bottom: 0.5rem;
+}
+
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+}
+
+h2 {
+    font-size: 2rem;
+}
+
+h3 {
+    font-size: 1.2rem;
+}
+
+p {
+    font-size: 1.2rem;
+}
+
+td {
+    font-size: 1.2rem;
+    width: 400px;
+    text-align: left;
+    border-bottom: 1px solid var(--color-primary);
+    padding: 6px;
+}
+
+
+/* INPUT */
+input {
+    border: none;
+    background: transparent;
+    outline: none;
+    box-shadow: none;
+    color: inherit;
+    font: inherit;
+    padding: 0;
+    margin: 0;
+    width: auto;
+    display: inline;
+    cursor: text;
+    caret-color: transparent;
+}
+
+/* Giữ nguyên phần còn lại */
+input:hover,
+input:focus,
+input:active {
+    border: none;
+    background: transparent;
+    outline: none;
+    box-shadow: none;
+}
+
+input::selection {
+    background: transparent;
+}
+
+
+
+
+/* CUSTOM */
+
+.primary {
+    color: var(--color-primary);
+}
+
+.secondary {
+    color: var(--color-secondary);
+}
+
+.upper {
+    text-transform: uppercase;
+}
+
+.lower {
+    text-transform: lowercase;
+}
+
+.capitalize {
+    text-transform: capitalize;
+}
+
+.check-sum {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    background-color: rgba(0, 0, 0, 0.3);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-family: sans-serif;
+    z-index: 9999;
+}
+
+
+.flash {
+    background-color: #ffe0e0;
+    transition: background-color 0.2s;
+}
+
+#name-current {
+    margin-bottom: 2rem;
+}
+
+#event-date {
+    margin-top: 60px;
+    font-style: italic;
+}
+
+
+/* THÔNG TIN */
+.tag-name {
+    text-align: left;
+    width: 120px;
+}
