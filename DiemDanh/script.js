@@ -1,6 +1,8 @@
 
 // ===================================================
 // 🔹 Lấy dữ liệu từ Google Apps Script
+// 🔹 MSSV = "NEWSTART" --> Reset local
+// 🔹 MSSV = "EXPORTS" --> Export local
 // ===================================================
 let countSuccess = 0;
 let countError = 0;
@@ -76,12 +78,29 @@ let lastValue = '';
 
 function handleInput(e) {
     const input = e.target;
-    let value = input.value.trim();
+    let value = input.value.trim().toUpperCase(); // đổi sang in hoa để dễ check
 
+    // Kiểm tra lệnh đặc biệt
+    if (value === "NEWSTART") {
+        resetLocalData();
+        input.value = "";
+        lastValue = "";
+        return;
+    }
+
+    if (value === "EXPORTS") {
+        exportLocalToCSV();
+        input.value = "";
+        lastValue = "";
+        return;
+    }
+
+    // Xử lý MSSV bình thường (8 ký tự)
     if (value.length === 8 && lastValue.length !== 8) {
         handleCheckMSSV(value);
     }
 
+    // Giới hạn input > 8 ký tự
     if (value.length > 8) {
         const newStart = value.slice(-1);
         input.value = newStart;
@@ -150,6 +169,7 @@ function postAttendance(mssv) {
 
     countTotal++;
     updateCheckSum();
+    saveToLocal(payload);
 
     fetch(GAS_BASE_URL, {
         method: "POST",
@@ -175,4 +195,87 @@ function postAttendance(mssv) {
             updateCheckSum();
             console.error("❌ Lỗi khi gửi điểm danh:", err);
         });
+}
+
+// ===================================================
+// 🔹 Reset dữ liệu localStorage và counters
+// ===================================================
+function resetLocalData() {
+    // Xóa dữ liệu attendance
+    localStorage.removeItem('attendanceData');
+
+    // Reset counters
+    countSuccess = 0;
+    countError = 0;
+    countTotal = 0;
+    updateCheckSum();
+
+    console.log("🗑️ Dữ liệu local và counters đã được reset!");
+}
+
+// ===================================================
+// 🔹 Lưu dữ liệu vào localStorage (mảng JSON)
+// ===================================================
+function saveToLocal(record) {
+    let attendanceData = [];
+    const oldData = localStorage.getItem('attendanceData');
+    if (oldData) {
+        try {
+            attendanceData = JSON.parse(oldData);
+            if (!Array.isArray(attendanceData)) attendanceData = [];
+        } catch {
+            attendanceData = [];
+        }
+    }
+
+    // Chuyển URLSearchParams sang object thuần
+    const objRecord = {};
+    for (const [key, value] of record.entries()) {
+        objRecord[key] = value;
+    }
+
+    attendanceData.push(objRecord);
+    localStorage.setItem('attendanceData', JSON.stringify(attendanceData));
+}
+
+// ===================================================
+// 🔹 Xuất dữ liệu localStorage ra CSV
+// ===================================================
+function exportLocalToCSV() {
+    const data = localStorage.getItem('attendanceData');
+    if (!data) {
+        alert("❌ Không có dữ liệu để xuất!");
+        return;
+    }
+
+    let attendanceData;
+    try {
+        attendanceData = JSON.parse(data);
+        if (!Array.isArray(attendanceData)) throw new Error();
+    } catch {
+        alert("❌ Dữ liệu local bị lỗi!");
+        return;
+    }
+
+    // Tạo header CSV từ key của object đầu tiên
+    const keys = Object.keys(attendanceData[0] || {});
+    const csvRows = [
+        keys.join(','), // header
+        ...attendanceData.map(obj => keys.map(k => `"${(obj[k] || '').toString().replace(/"/g, '""')}"`).join(','))
+    ];
+
+    const csvContent = csvRows.join('\r\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+
+    // Tạo link download
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+    a.href = url;
+    a.download = `attendance_${timestamp}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+
+    console.log("📄 Dữ liệu đã xuất ra CSV!");
 }
