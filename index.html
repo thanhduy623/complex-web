@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh sách các Web Con Tự Động</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #1c1c1c;
+            color: #f0f0f0;
+        }
+        h1 {
+            color: #58a6ff;
+            border-bottom: 2px solid #30363d;
+            padding-bottom: 10px;
+        }
+        #container {
+            display: grid;
+            /* Tạo grid 2 cột, có thể điều chỉnh */
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); 
+            gap: 20px;
+            padding-top: 10px;
+        }
+        .card {
+            background-color: #2d2d2d;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+            overflow: hidden;
+            text-align: center;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+        }
+        .card a {
+            display: block;
+            padding: 20px;
+            text-decoration: none;
+            color: #90d381;
+            font-size: 1.3em;
+            font-weight: bold;
+        }
+        .card a:hover {
+            color: #72cc62;
+        }
+        .loading {
+            color: #58a6ff;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <h1>Các Web Con (Tự động lấy từ GitHub)</h1>
+    <p class="loading" id="status-message">Đang tải danh sách thư mục...</p>
+    <div id="container">
+        </div>
+
+    <script>
+        // Cấu hình: Thay thế bằng thông tin của bạn
+        const USERNAME = 'thanhduy623'; // Tên người dùng GitHub
+        const REPO_NAME = 'complex-web'; // Tên kho lưu trữ của bạn (tôi giả định là complex-web)
+        const GITHUB_API_URL = `https://api.github.com/repos/${USERNAME}/${REPO_NAME}/contents`;
+
+        const container = document.getElementById('container');
+        const statusMessage = document.getElementById('status-message');
+
+        async function fetchFolders() {
+            try {
+                const response = await fetch(GITHUB_API_URL);
+                if (!response.ok) {
+                    throw new Error(`Lỗi HTTP: ${response.status}`);
+                }
+                const contents = await response.json();
+
+                // Lọc chỉ lấy các mục có type là 'dir' (thư mục)
+                const folders = contents.filter(item => item.type === 'dir');
+
+                if (folders.length === 0) {
+                    statusMessage.textContent = "Không tìm thấy thư mục web con nào.";
+                    return;
+                }
+
+                // Xóa thông báo tải
+                statusMessage.style.display = 'none';
+
+                // Tạo Card cho từng thư mục
+                folders.forEach(folder => {
+                    // Tạo đường dẫn tương đối để hoạt động với GitHub Pages
+                    const folderPath = `./${folder.name}/`; 
+
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    
+                    const link = document.createElement('a');
+                    link.href = folderPath;
+                    link.textContent = folder.name; // Hiển thị tên thư mục
+
+                    card.appendChild(link);
+                    container.appendChild(card);
+                });
+
+            } catch (error) {
+                console.error("Lỗi khi tải nội dung repo:", error);
+                statusMessage.textContent = `Không thể tải danh sách. Vui lòng kiểm tra console. (Lỗi: ${error.message})`;
+                statusMessage.style.color = '#ff6b6b'; // Màu đỏ cho lỗi
+            }
+        }
+
+        fetchFolders();
+    </script>
+</body>
+</html>
