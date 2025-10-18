@@ -8,7 +8,8 @@ let countSuccess = 0;
 let countError = 0;
 let countTotal = 0;
 let studentList = [];
-const GAS_BASE_URL = "https://script.google.com/macros/s/AKfycbxkSeUsdA2B4sXoctEII2_gspAmUmwqiKzfNHXsyxNG5W_zvpozP28AGeSkc6Wv6zYyBw/exec"; // ← Thay bằng URL thật
+const GAS_BASE_URL = "https://script.google.com/macros/s/AKfycbxkSeUsdA2B4sXoctEII2_gspAmUmwqiKzfNHXsyxNG5W_zvpozP28AGeSkc6Wv6zYyBw/exec";
+const SHEET_URL = "https://docs.google.com/spreadsheets/d/15oTWRVPtAEEqnfAUGL0nhrb_U8_2eIP2k2TrsT_x0T4/edit?gid=1637855217#gid=1637855217"
 
 
 
@@ -244,7 +245,7 @@ function saveToLocal(record) {
 function exportLocalToCSV() {
     const data = localStorage.getItem('attendanceData');
     if (!data) {
-        alert("❌ Không có dữ liệu để xuất!");
+        console.warn("❌ Không có dữ liệu để xuất!");
         return;
     }
 
@@ -253,18 +254,29 @@ function exportLocalToCSV() {
         attendanceData = JSON.parse(data);
         if (!Array.isArray(attendanceData)) throw new Error();
     } catch {
-        alert("❌ Dữ liệu local bị lỗi!");
+        console.warn("❌ Dữ liệu local bị lỗi!");
         return;
     }
 
-    // Tạo header CSV từ key của object đầu tiên
-    const keys = Object.keys(attendanceData[0] || {});
+    if (attendanceData.length === 0) {
+        console.warn("❌ Dữ liệu rỗng!");
+        return;
+    }
+
+    // Lấy header từ key của object đầu tiên
+    const keys = Object.keys(attendanceData[0]);
+    
+    // Tạo CSV rows, escape dấu " nếu có
     const csvRows = [
         keys.join(','), // header
-        ...attendanceData.map(obj => keys.map(k => `"${(obj[k] || '').toString().replace(/"/g, '""')}"`).join(','))
+        ...attendanceData.map(obj =>
+            keys.map(k => `"${(obj[k] || '').toString().replace(/"/g, '""')}"`).join(',')
+        )
     ];
 
-    const csvContent = csvRows.join('\r\n');
+    // Thêm BOM UTF-8 để Excel đọc đúng tiếng Việt
+    const csvContent = '\uFEFF' + csvRows.join('\r\n');
+
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
 
     // Tạo link download
@@ -277,5 +289,5 @@ function exportLocalToCSV() {
     a.click();
     document.body.removeChild(a);
 
-    console.log("📄 Dữ liệu đã xuất ra CSV!");
+    console.log("📄 Dữ liệu đã xuất ra CSV thành công!");
 }
