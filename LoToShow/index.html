@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lô Tô Show</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+
+        <div class="header">
+            <h1>LÔ TÔ SHOW</h1>
+
+            <button id="btnTaoMoi">
+                Tạo mới
+            </button>
+        </div>
+
+        <div id="bangLoTo" class="bang-lo-to"></div>
+
+    </div>
+
+    <!-- popup chiến thắng -->
+    <div id="popupChienThang" class="popup-an">
+        <div class="popup-content">
+
+            <h2>!!!! KINH !!!!</h2>
+
+            <p>Bạn đã hoàn thành hàng:</p>
+
+            <div id="daySoChienThang" class="day-so"></div>
+
+            <button id="btnDongPopup">
+                Đóng
+            </button>
+
+        </div>
+    </div>
+
+
+    <!-- Popup xác nhận tạo mới -->
+    <div id="popupXacNhan" class="popup-an">
+        <div class="popup-content">
+
+            <h2>TẠO MỚI</h2>
+
+            <p>
+                Bạn có chắc chắn muốn tạo ván chơi mới?
+            </p>
+
+            <div class="popup-action">
+
+                <button
+                    id="btnHuyTaoMoi"
+                    class="btn-phu"
+                >
+                    Huỷ
+                </button>
+
+                <button
+                    id="btnXacNhanTaoMoi"
+                >
+                    Xác nhận
+                </button>
+
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Âm thanh -->
+    <audio id="soundGanThang" src="sounding_1.mp3"></audio>
+    <audio id="soundChienThang" src="sounding_2.mp3"></audio>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
